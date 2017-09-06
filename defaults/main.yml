@@ -1,0 +1,19 @@
+---
+## The version of the node exporter to download and install. A full list of versions can be found at the following URL:
+## https://github.com/oliver006/varnish_exporter/releases
+varnish_exporter_version: "1.3.2"
+
+## The architecture that the node exporter supports. The exporter is built for a series of architectures; see the above
+## releases link for further details
+varnish_exporter_arch: "amd64"
+
+## The checksum algorithm to check the release against. See the following URL for a list of options:
+## http://docs.ansible.com/ansible/stat_module.html
+varnish_exporter_checksum_algorithm: "sha512"
+
+## There are two checksums that matter: The archive, and the binary. The binary is the executable node exporter,
+## the archive the thing it's downloaded with.
+varnish_exporter_checksum_binary: "afef7ab84b3cdf23731e27c05dbcd5bf357ba333b7bf43a46e3911ae5490abb1a70c8356ba9c8cc283610085a0ed874bf323018b5c264f929d551a20c407776c"
+
+## See above
+varnish_exporter_checksum_archive: "4a0e38b7db86f2a1c8d25472ce83d5b085ce30b825d53ce4e030f582209a9426c91462803679b18e0a62777005774b4ac609e165185c012d8f373d394290cd45"

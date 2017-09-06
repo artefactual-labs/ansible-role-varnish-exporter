@@ -1,0 +1,16 @@
+---
+- name: "Create the environment file"
+  template:
+    src: "etc/default/varnish_exporter"
+    dest: "/etc/default/varnish_exporter"
+    owner: "root"
+    mode: "u=r,g=r,o=r"
+  notify: "restart varnish_exporter"
+
+- name: "Create the systemd service"
+  template:
+    src: "etc/systemd/system/varnish_exporter.service.j2"
+    dest: "/etc/systemd/system/varnish_exporter.service"
+    owner: "root"
+    mode: "u=rwx,g=r,o=r"
+  notify: "restart varnish_exporter"

@@ -1,0 +1,7 @@
+---
+- name: "restart varnish_exporter"
+  systemd:
+    state: "restarted"
+    name: "varnish_exporter"
+    enabled: "yes"
+    daemon_reload: "yes"

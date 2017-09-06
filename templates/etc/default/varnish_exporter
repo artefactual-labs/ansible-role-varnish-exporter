@@ -1,0 +1,5 @@
+# These are the defaults for the redis_exporter. Possible variables are:
+#
+# - VARNISH_EXPORTER_ARGS="" # Extra command line arguments
+#
+VARNISH_EXPORTER_ARGS=""

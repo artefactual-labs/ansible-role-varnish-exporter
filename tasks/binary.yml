@@ -1,0 +1,44 @@
+---
+- name: "Check whether the node exporter has already been installed"
+  stat:
+    path: "/usr/local/bin/varnish_exporter"
+    checksum_algorithm: "{{ varnish_exporter_checksum_algorithm }}"
+  register: "bin"
+
+- name: "Fetch the archive from GitHub"
+  get_url:
+    url: "https://github.com/jonnenauha/prometheus_varnish_exporter/releases/download/{{ varnish_exporter_version }}/prometheus_varnish_exporter-{{ varnish_exporter_version }}.linux-{{ varnish_exporter_arch }}.tar.gz"
+    dest: "/tmp/varnish_exporter-{{ varnish_exporter_version }}.linux-{{ varnish_exporter_arch }}.tar.gz"
+    checksum: "{{ varnish_exporter_checksum_algorithm }}:{{ varnish_exporter_checksum_archive }}"
+  when: bin.stat.exists == False or
+        bin.stat.checksum != varnish_exporter_checksum_binary
+
+- name: "Unpack the archive in /tmp"
+  unarchive:
+    remote_src: true
+    src: "/tmp/varnish_exporter-{{ varnish_exporter_version }}.linux-{{ varnish_exporter_arch }}.tar.gz"
+    dest: "/tmp"
+  when: bin.stat.exists == False or
+        bin.stat.checksum != varnish_exporter_checksum_binary
+
+- name: "Move varnish_exporter to the /usr/local/bin/varnish_exporter"
+  copy:
+    remote_src: true
+    src: "/tmp/prometheus_varnish_exporter-{{ varnish_exporter_version }}.linux-{{ varnish_exporter_arch }}/prometheus_varnish_exporter"
+    dest: "/usr/local/bin/prometheus_varnish_exporter"
+    owner: "root"
+    group: "root"
+    mode: "u=rwx,g=rwx,o=rwx"
+  when: bin.stat.exists == False or
+        bin.stat.checksum != varnish_exporter_checksum_binary
+  notify: "restart varnish_exporter"
+
+- name: "Clean the /tmp/ dir up"
+  file:
+    path: "{{ item }}"
+    state: "absent"
+  with_items:
+    - "/tmp/varnish_exporter-{{ varnish_exporter_version }}.linux-{{ varnish_exporter_arch }}.tar.gz"
+    - "/tmp/prometheus_varnish_exporter-{{ varnish_exporter_version }}.linux-{{ varnish_exporter_arch }}"
+  when: bin.stat.exists == False or
+        bin.stat.checksum != varnish_exporter_checksum_binary
