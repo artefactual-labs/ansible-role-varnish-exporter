@@ -1,9 +1,12 @@
 [Unit]
 Description=The prometheus varnish exporter
 Documentation=https://github.com/sitewards/ansible-role-varnish-exporter
+After=varnish.service
 
 [Service]
 EnvironmentFile=/etc/default/varnish_exporter
+Restart=always
+RestartSec=60
 
 # Start the service, bound to localhost. It will be exposed by another service, such as NGINX or stunnel.
 ExecStart=/usr/local/bin/prometheus_varnish_exporter \
